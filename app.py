@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, Course
+from models import db, connect_db, Course, Review
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///school'
@@ -40,3 +40,21 @@ def course_new():
     """ Show form for adding a course. """
 
     return render_template("course_new.html")
+
+
+@app.route("/courses/<int:course_id>/reviews/new")
+def reviews_new(course_id):
+    """ Show form for adding a review to a course. """
+
+    return render_template("review_new.html", course_id=course_id)
+
+
+@app.route("/courses/<int:course_id>/reviews", methods=["POST"])
+def reviews_create(course_id):
+    """ Show form for adding a review to a course. """
+
+    new_review = Review(body=request.form.get("body"), course_id=course_id)
+    db.session.add(new_review)
+    db.session.commit()
+
+    return redirect("/courses")

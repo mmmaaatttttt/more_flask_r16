@@ -12,6 +12,18 @@
   </div>
   <div class="card-body">
     <p class="card-text">{{ course.description }}</p>
+    <hr/>
+    {% if course.reviews %}
+      <p>Here's what people are saying about this course:</p>
+      <ul>
+        {% for review in course.reviews %}
+          <li>{{ review.body }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No reviews yet :(</p>
+    {% endif %}
+    <a href="/courses/{{ course.id }}/reviews/new" class="btn btn-success">Add a review</a>
   </div>
 </div>
 {% endfor %}
