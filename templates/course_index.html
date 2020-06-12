@@ -17,7 +17,10 @@
       <p>Here's what people are saying about this course:</p>
       <ul>
         {% for review in course.reviews %}
-          <li>{{ review.body }}</li>
+          <li>
+            {{ review.body }}
+            <span data-review-id="{{ review.id }}" class="delete-review">❌</span>
+          </li>
         {% endfor %}
       </ul>
     {% else %}

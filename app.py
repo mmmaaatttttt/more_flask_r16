@@ -58,3 +58,14 @@ def reviews_create(course_id):
     db.session.commit()
 
     return redirect("/courses")
+
+
+@app.route("/reviews/<int:review_id>", methods=["DELETE"])
+def reviews_destroy(review_id):
+    """ Delete a review. """
+
+    review_to_delete = Review.query.get_or_404(review_id)
+    db.session.delete(review_to_delete)
+    db.session.commit()
+
+    return {"status": "ok", "review_id": review_to_delete.id}
