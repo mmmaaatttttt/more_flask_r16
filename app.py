@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, Course, Review
+from models import db, connect_db, Course, Review, Instructor
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///school'
@@ -13,6 +13,7 @@ connect_db(app)
 def course_redirect():
     """redirect to course_index"""
     return redirect("/courses")
+
 
 @app.route("/courses")
 def course_index():
@@ -28,7 +29,9 @@ def course_create():
 
     title = request.form.get("title")
     description = request.form.get("description")
-    new_course = Course(title=title, description=description)
+    instructors = request.form.getlist("instructor")
+    instructor_objs = Instructor.query.filter(Instructor.id.in_(instructors)).all()
+    new_course = Course(title=title, description=description, instructors=instructor_objs)
     db.session.add(new_course)
     db.session.commit()
 
@@ -39,7 +42,8 @@ def course_create():
 def course_new():
     """ Show form for adding a course. """
 
-    return render_template("course_new.html")
+    instructors = Instructor.query.all()
+    return render_template("course_new.html", instructors=instructors)
 
 
 @app.route("/courses/<int:course_id>/reviews/new")

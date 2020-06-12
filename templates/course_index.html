@@ -7,8 +7,9 @@
 <a href="/courses/new" class="btn btn-primary mb-3">Add a class</a>
 {% for course in courses %}
 <div class="card mb-4">
-  <div class="card-header">
-    {{ course.title }}
+  <div class="card-header d-flex justify-content-between">
+    <p class="mb-0">{{ course.title }}</p>
+    <p class="mb-0"><em>{{ course.instructors_str() }}</em></p>
   </div>
   <div class="card-body">
     <p class="card-text">{{ course.description }}</p>
